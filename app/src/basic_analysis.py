@@ -2,13 +2,19 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
+
+# %%
+# Get the current working directory
+current_path = os.getcwd()
+print("Current Working Directory:", current_path)
 
 
 #%%
 # Load the data
 # file_path = 'Online Retail_small.csv'
 # data = pd.read_csv(file_path)
-file_path = 'src/Online Retail.xlsx'
+file_path = 'app/src/Online Retail.xlsx'
 data = pd.read_excel(file_path)
 
 
@@ -65,5 +71,15 @@ plt.xlabel('Columns')
 plt.ylabel('Percentage of Missing Data (%)')
 plt.show()
 
+
+# %%
+# For records with missing 'Description'
+missing_description = data[data['Description'].isnull()]
+print(missing_description)
+
+# %%
+# For records with missing 'CustomerID'
+missing_customerid = data[data['CustomerID'].isnull()]
+print(missing_customerid)
 
 # %%
