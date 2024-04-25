@@ -1,11 +1,14 @@
 #%%
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 
 #%%
 # Load the data
 # file_path = 'Online Retail_small.csv'
 # data = pd.read_csv(file_path)
-file_path = 'Online Retail.xlsx'
+file_path = 'src/Online Retail.xlsx'
 data = pd.read_excel(file_path)
 
 
@@ -22,7 +25,6 @@ unique_counts = data.nunique()
 unique_counts
 
 # %%
-import matplotlib.pyplot as plt
 
 # Create a bar chart for visualizing the unique counts
 plt.figure(figsize=(10, 6))
@@ -49,46 +51,19 @@ missing_values, data_types
 data['InvoiceDate'] = pd.to_datetime(data['InvoiceDate'])
 
 
-# %%
-# Define true duplicates considering multiple fields that should be identical for an order
-# Assuming these columns together uniquely identify a transaction record
-duplicate_criteria = ['InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'CustomerID']
 
 # %%
 
-# Finding duplicates based on the specified criteria, marking all occurrences
-data['is_duplicate'] = data.duplicated(subset=duplicate_criteria, keep=False)
+# Missing value visualization
+missing_data_ratio = (data.isnull().sum() / len(data)) * 100
+missing_data_ratio = missing_data_ratio[missing_data_ratio > 0]  # Filter columns with missing values
 
-# Filter to get only the duplicates
-duplicates = data[data['is_duplicate'] == True]
+plt.figure(figsize=(10, 5))
+sns.barplot(x=missing_data_ratio.index, y=missing_data_ratio.values, palette='viridis')
+plt.title('Percentage of Missing Values Per Column')
+plt.xlabel('Columns')
+plt.ylabel('Percentage of Missing Data (%)')
+plt.show()
 
-# Sort the duplicates to better analyze them
-duplicates_sorted = duplicates.sort_values(by=['InvoiceNo', 'StockCode', 'InvoiceDate'])
-
-# Display the duplicates
-print(duplicates_sorted[['InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'CustomerID']])
-
-
-# %%
-# Finding duplicates based on the specified criteria
-duplicates = data[data.duplicated(subset=duplicate_criteria, keep=False)]
-
-# Sorting by 'InvoiceNo' and 'InvoiceDate' to review duplicates more easily
-duplicates_sorted = duplicates.sort_values(by=['InvoiceNo', 'InvoiceDate'])
-
-# Displaying the duplicates
-print(duplicates_sorted)
 
 # %%
-
-# Finding duplicates based on the specified criteria, marking all occurrences
-data['is_duplicate'] = data.duplicated(subset=duplicate_criteria, keep=False)
-
-# Filter to get only the duplicates
-duplicates = data[data['is_duplicate'] == True]
-
-# Sort the duplicates to better analyze them
-duplicates_sorted = duplicates.sort_values(by=['InvoiceNo', 'StockCode', 'InvoiceDate'])
-
-# Display the duplicates
-print(duplicates_sorted[['InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'CustomerID']])
