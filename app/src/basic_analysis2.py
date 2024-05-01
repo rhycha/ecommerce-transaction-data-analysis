@@ -1,7 +1,13 @@
 # %%
 import pandas as pd 
 
-data_type = {"CustomerID": str}
+
+
+# Example usage
+df = pd.read_excel('Online Retail.xlsx', dtype=data_type)
+df_selected = preprocess_data(df)
+rfm_dataset = calculate_rfm(df_selected)
+rfm_dataset.head()
 df = pd.read_excel('Online Retail.xlsx', dtype = data_type)
 
 

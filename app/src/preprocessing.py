@@ -70,17 +70,38 @@ def remove_cancelled_transactions(data):
 
     return data_clean
 
+def add_total_sales_column(data):
+    # Create a new column for total sales per line item
+    data['TotalSales'] = data['Quantity'] * data['UnitPrice']
+
+    return data
+
+def group_by_country_and_month(data):
+    # Group by country and month, summing up the total sales
+    monthly_sales_by_country = data.set_index('InvoiceDate').groupby([pd.Grouper(freq='M'), 'Country'])['TotalSales'].sum().unstack(fill_value=0)
+    print(monthly_sales_by_country.head())
+    return monthly_sales_by_country
+
+
+
+
+
 def tranding_analysis_preprocessing(data):
     # data = remove_duplicated_order_in_one_invoice(data)
     # data = add_date_and_time_columns_and_monetary(data)
     data = fix_datatype(data)
     data = remove_cancelled_transactions(data)
+    data = add_total_sales_column(data)
+    data = group_by_country_and_month(data)
     return data
+
+
 
 def davis(df):
     df = add_date_and_time_columns_and_monetary(df)
     df = aggregated_by_costomerid_with_rfm(df)
     return df
+
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-
+import matplotlib.pyplot as plt
 
 def show_duplicate(data):
     # Define true duplicates considering multiple fields that should be identical for an order
@@ -29,3 +29,21 @@ def show_duplicate(data):
 
     # Displaying the duplicates
     print(duplicates_sorted)
+
+
+def plot_monthly_sales_by_country(data):
+
+    # Sum sales across all months to identify the top countries
+    top_countries = data.sum().nlargest(5).index
+
+    # Plot monthly sales trends for the top 5 countries
+    plt.figure(figsize=(14, 8))
+    for country in top_countries:
+        data[country].plot(label=country)
+
+    plt.title('Monthly Sales Trends by Country')
+    plt.xlabel('Month')
+    plt.ylabel('Total Sales')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
