@@ -47,3 +47,16 @@ def plot_monthly_sales_by_country(data):
     plt.legend()
     plt.grid(True)
     plt.show()
+
+
+def plot_top5_total_sales_by_country(data):
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(data['Country'], data['TotalSales'])
+    plt.xlabel('Country')
+    plt.ylabel('Monetary')
+    plt.title('Monetary by Top 5 Countries')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+

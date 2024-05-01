@@ -83,10 +83,21 @@ def group_by_country_and_month(data):
     return monthly_sales_by_country
 
 
+def prep_top5_total_sales_by_country(data):
+    data = fix_datatype(data)
+    data = add_total_sales_column(data)
 
+    Monetary_Country = data[['Country', 'TotalSales']]
 
+    Monetary_Country= Monetary_Country.groupby('Country')['TotalSales'].sum().reset_index()
 
-def tranding_analysis_preprocessing(data):
+    Monetary_Country = Monetary_Country.sort_values(by='TotalSales', ascending=False)
+
+    Monetary_Country = Monetary_Country.head(5)
+    
+    return Monetary_Country
+
+def prep_monthly_sales_by_country(data):
     # data = remove_duplicated_order_in_one_invoice(data)
     # data = add_date_and_time_columns_and_monetary(data)
     data = fix_datatype(data)
