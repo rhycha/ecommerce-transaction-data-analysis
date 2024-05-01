@@ -12,9 +12,11 @@ def load_data():
     
     # Determine the correct file path based on the current directory
     if current_path.endswith('app'):
-        file_path = 'app/src/Online Retail.xlsx'
+        file_path = 'src/Online Retail.xlsx'
     elif current_path.endswith('app/src'):
         file_path = 'Online Retail.xlsx'
+    elif current_path.endswith('ecommerce-transaction-data-analysis'):
+        file_path = 'app/src/Online Retail.xlsx'
     else:
         print("The script is not in the expected directory.")
         return None
