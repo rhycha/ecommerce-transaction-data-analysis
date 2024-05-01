@@ -56,6 +56,27 @@ def aggregated_by_costomerid_with_rfm(df_selected):
     return rfm_dataset
 
 
+def fix_datatype(data):
+    data['CustomerID'] = data['CustomerID'].astype(str)
+    data['InvoiceNo'] = data['InvoiceNo'].astype(str)
+    # Convert InvoiceDate to datetime format
+    data['InvoiceDate'] = pd.to_datetime(data['InvoiceDate'])
+
+    return data
+
+def remove_cancelled_transactions(data):
+    # Filter out cancellation transactions
+    data_clean = data[~data['InvoiceNo'].str.startswith('C')]
+
+    return data_clean
+
+def tranding_analysis_preprocessing(data):
+    # data = remove_duplicated_order_in_one_invoice(data)
+    # data = add_date_and_time_columns_and_monetary(data)
+    data = fix_datatype(data)
+    data = remove_cancelled_transactions(data)
+    return data
+
 def davis(df):
     df = add_date_and_time_columns_and_monetary(df)
     df = aggregated_by_costomerid_with_rfm(df)
