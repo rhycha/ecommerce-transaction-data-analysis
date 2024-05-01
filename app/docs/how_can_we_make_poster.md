@@ -31,7 +31,7 @@ Creating a poster for a data analysis project on one year of transactions for a 
 
 ### 5. Data Visualizations
 - **Graphs and Charts**: Include visual representations of data such as bar charts, line graphs, heat maps, or pie charts to illustrate sales trends, customer demographics, or product performance.
-2 （we might get while we do)
+2 (we might get while we do)
 
 - **Infographics**: Use infographics to present complex data in an easy-to-understand format, like customer segmentation or inventory turnover rates.
 
