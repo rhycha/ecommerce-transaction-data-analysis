@@ -31,6 +31,9 @@ def add_date_and_time_columns_and_monetary(df):
 
     return df_selected
 
+def aggregaed_by_orderid_and_product_code(df):
+    pass
+
 
 def aggregated_by_costomerid_with_rfm(df_selected):
     # Compare RFM variables to 2012-01-01 
@@ -144,6 +147,37 @@ def generate_keywords(data):
     print(keyword_sales.head(10))
     return keyword_sales
 
+def preprocess_and_aggregate_with_recency(data):
+    # Remove rows with missing CustomerID
+    data = data.dropna(subset=['CustomerID'])
+    
+    # Parse InvoiceDate to datetime
+    data['InvoiceDate'] = pd.to_datetime(data['InvoiceDate'])
+    
+    # Calculate TotalRevenue for each row
+    data['TotalRevenue'] = data['Quantity'] * data['UnitPrice']
+    
+    # Find the most recent date in the dataset as the reference date
+    reference_date = data['InvoiceDate'].max()
+    
+    # Aggregate data by CustomerID
+    aggregated_data = data.groupby('CustomerID').agg(
+        TotalQuantity=('Quantity', 'sum'),
+        TotalRevenue=('TotalRevenue', 'sum'),
+        UniqueInvoices=('InvoiceNo', 'nunique'),
+        LastPurchaseDate=('InvoiceDate', 'max')
+    ).reset_index()
+    
+    # Calculate recency as the difference between the reference date and the last purchase date
+    aggregated_data['RecencyDays'] = (reference_date - aggregated_data['LastPurchaseDate']).dt.days
+    
+    # Drop the LastPurchaseDate column as it's no longer needed
+    aggregated_data = aggregated_data.drop(columns=['LastPurchaseDate'])
+    
+    return aggregated_data
+
+
+
 def chatgpt_package(data):
     import pandas as pd
     import re
@@ -187,7 +221,6 @@ def davis(df):
 if __name__ == '__main__':
     from utils import load_data
     data = load_data()
-
     chatgpt_package(data)
     # # data = pd.read_excel('Online Retail.xlsx')
     # data = pd.read_excel('app/src/Online Retail.xlsx')
@@ -197,3 +230,5 @@ if __name__ == '__main__':
     # print(rfm_dataset.head())
     # print(davis(data).head())
     # print("Done")
+    # Apply the preprocessing function to the data
+
