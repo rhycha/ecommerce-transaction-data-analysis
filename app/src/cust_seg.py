@@ -60,7 +60,6 @@ for cluster in range(4):
 ax.set_xlabel('Recency')
 ax.set_ylabel('Frequency')
 ax.set_zlabel('Monetary')
-
 # Set title and legend
 ax.set_title('Customer Clusters')
 ax.legend()

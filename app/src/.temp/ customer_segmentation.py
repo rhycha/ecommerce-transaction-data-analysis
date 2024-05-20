@@ -1,3 +1,4 @@
+# %%
 import pandas as pd
 from utils import load_data
 
@@ -37,6 +38,7 @@ import matplotlib.pyplot as plt
 scaler = StandardScaler()
 scaled_data = scaler.fit_transform(customer_data[['Recency', 'Frequency', 'Monetary']])
 
+# %%
 # Determine the optimal number of clusters using the elbow method
 sse = []
 for k in range(1, 11):
@@ -52,13 +54,28 @@ plt.xlabel('Number of clusters')
 plt.ylabel('Sum of squared distances (SSE)')
 plt.show()
 
+# %%
 # Apply K-Means with 4 clusters
 kmeans = KMeans(n_clusters=4, max_iter=300, random_state=42)
 customer_data['Cluster'] = kmeans.fit_predict(scaled_data)
 
 # Calculate the mean values of Recency, Frequency, and Monetary for each cluster
 cluster_summary = customer_data.groupby('Cluster').mean().reset_index()
-
 cluster_summary
+
+# %%
+import seaborn as sns
+
+# Plot pairplot of the clusters
+sns.pairplot(customer_data, hue='Cluster', diag_kind='kde', palette='viridis')
+plt.suptitle('Customer Clusters - Recency, Frequency, Monetary', y=1.02)
+plt.show()
+
+# %%
+# Save the clustered data to a CSV file
+output_file_path = '/app/data/customer_clusters.csv'
+customer_data.to_csv(output_file_path, index=False)
+
+output_file_path
 
 

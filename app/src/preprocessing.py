@@ -2,6 +2,27 @@ import pandas as pd
 import re
 
 
+def preprocess_data(data):
+
+    # Ensure 'InvoiceNo' column is treated as string and handle non-string entries
+    data['InvoiceNo'] = data['InvoiceNo'].astype(str)
+
+    # Remove cancellation invoices (starting with 'C' or having negative quantity)
+    data = data[~data['InvoiceNo'].str.startswith('C', na=False)]
+    data = data[data['Quantity'] > 0]
+
+    # Aggregate data by InvoiceNo and StockCode
+    data = data.groupby(['InvoiceNo', 'StockCode'], as_index=False).agg({
+        'Description': 'first',
+        'Quantity': 'sum',
+        'InvoiceDate': 'first',
+        'UnitPrice': 'mean',
+        'CustomerID': 'first',
+        'Country': 'first'
+    })
+
+    return data
+
 def remove_duplicated_order_in_one_invoice(data):
     # Define true duplicates considering multiple fields that should be identical for an order
     # Assuming these columns together uniquely identify a transaction record
