@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from collections import Counter
 from itertools import combinations
 import matplotlib.colors as mcolors
+from adjustText import adjust_text
 from utils import load_data
 
 
@@ -76,18 +77,18 @@ cmap = plt.get_cmap('viridis')
 plt.figure(figsize=(15, 10), facecolor='black')
 ax = plt.gca()  # Get current Axes instance
 ax.set_facecolor('black')
-pos = nx.spring_layout(G, k=0.15, iterations=20)
+pos = nx.fruchterman_reingold_layout(G, k=0.5, iterations=2000)  # Increase k and iterations
 edges = nx.draw_networkx_edges(
     G, pos, edge_color=[cmap(norm(weights[edge])) for edge in G.edges], alpha=0.3, ax=ax
 )
-nodes = nx.draw_networkx_nodes(G, pos, node_size=10, ax=ax, node_color='white')  # Smaller node size
+nodes = nx.draw_networkx_nodes(G, pos, node_size=5, ax=ax, node_color='white')  # Smaller node size
 
-# Adjust labels to be lower than the points
-labels = nx.draw_networkx_labels(
-    G, pos, font_size=10, ax=ax, font_color='white',
-    verticalalignment='bottom',  # Position labels lower
-    horizontalalignment='center'
-)
+# Adjust labels to be above the points and use adjustText to avoid overlap
+texts = []
+for node, (x, y) in pos.items():
+    texts.append(plt.text(x, y + 0.02, node, fontsize=8, color='white', ha='center'))  # Move text above nodes
+
+adjust_text(texts, arrowprops=dict(arrowstyle='-', color='white'))
 
 # Add colorbar
 sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
