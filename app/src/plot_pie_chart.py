@@ -15,7 +15,7 @@ country_sales = data.groupby('Country')['TotalSales'].sum().reset_index()
 total_sales_sum = country_sales['TotalSales'].sum()
 
 # Determine the threshold for 2% of total sales
-threshold = 0.02 * total_sales_sum
+threshold = 0.01 * total_sales_sum
 
 # Separate major countries from others
 major_countries = country_sales[country_sales['TotalSales'] >= threshold]
