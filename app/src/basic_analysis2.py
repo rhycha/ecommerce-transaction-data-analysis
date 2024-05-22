@@ -1,10 +1,11 @@
 # %%
 import pandas as pd 
+from utils import load_data
 
 
 
 # Example usage
-df = pd.read_excel('Online Retail.xlsx', dtype=data_type)
+df = load_data()
 df_selected = preprocess_data(df)
 rfm_dataset = calculate_rfm(df_selected)
 rfm_dataset.head()
@@ -61,3 +62,5 @@ rfm_dataset = rfm_dataset[rfm_dataset['Monetary'] != 0]
 rfm_dataset.head()
 
 
+
+# %%

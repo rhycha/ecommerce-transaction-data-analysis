@@ -7,6 +7,9 @@ def preprocess_data(data):
     # Ensure 'InvoiceNo' column is treated as string and handle non-string entries
     data['InvoiceNo'] = data['InvoiceNo'].astype(str)
 
+    # Remove UnitPrice values that are less than or equal to 0 for further analysis
+    data = data[data['UnitPrice'] > 0]
+    
     # Remove cancellation invoices (starting with 'C' or having negative quantity)
     data = data[~data['InvoiceNo'].str.startswith('C', na=False)]
     data = data[data['Quantity'] > 0]
