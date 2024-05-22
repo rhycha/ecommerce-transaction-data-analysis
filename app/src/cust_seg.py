@@ -34,11 +34,19 @@ scaler = StandardScaler()
 scaled_data = scaler.fit_transform(customer_data[['Recency', 'Frequency', 'Monetary']])
 
 # Apply K-Means with 4 clusters
-kmeans = KMeans(n_clusters=4, max_iter=300, random_state=42)
+kmeans = KMeans(n_clusters=3, max_iter=300, random_state=42)
 customer_data['Cluster'] = kmeans.fit_predict(scaled_data)
 
 # Save the clustered data to a CSV file
 customer_data.to_csv('customer_clusters.csv', index=False)
+
+# Calculate the percentage of each cluster
+cluster_counts = customer_data['Cluster'].value_counts()
+cluster_percentages = (cluster_counts / len(customer_data)) * 100
+
+# Print the results
+print("Percentage of each cluster:")
+print(cluster_percentages)
 
 # Plot pairplot of the clusters
 sns.pairplot(customer_data[['Recency', 'Frequency', 'Monetary', 'Cluster']], hue='Cluster', diag_kind='kde', palette='viridis')
@@ -51,7 +59,7 @@ ax = fig.add_subplot(111, projection='3d')
 
 # Plot each cluster with a different color
 colors = ['blue', 'green', 'red', 'purple']
-for cluster in range(4):
+for cluster in range(3):
     clustered_data = customer_data[customer_data['Cluster'] == cluster]
     ax.scatter(clustered_data['Recency'], clustered_data['Frequency'], clustered_data['Monetary'], 
                label=f'Cluster {cluster}', color=colors[cluster], s=50)
