@@ -192,8 +192,10 @@ def preprocess_and_aggregate_with_recency(data):
         LastPurchaseDate=('InvoiceDate', 'max')
     ).reset_index()
     
-    # Calculate recency as the difference between the reference date and the last purchase date
-    aggregated_data['RecencyDays'] = (reference_date - aggregated_data['LastPurchaseDate']).dt.days
+    # Calculate recency as the difference 
+    # between the reference date and the last purchase date
+    aggregated_data['RecencyDays'] = \
+    (reference_date - aggregated_data['LastPurchaseDate']).dt.days
     
     # Drop the LastPurchaseDate column as it's no longer needed
     aggregated_data = aggregated_data.drop(columns=['LastPurchaseDate'])
